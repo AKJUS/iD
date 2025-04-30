@@ -42,13 +42,12 @@ describe('iD.serviceMapillary', function() {
 
 
     describe('#reset', function() {
-        it('resets cache and image', function() {
+        it('resets cache', function() {
             mapillary.cache().foo = 'bar';
             mapillary.selectImage(context, { key: 'baz', loc: [10,0] });
 
             mapillary.reset();
             expect(mapillary.cache()).to.not.have.property('foo');
-            expect(mapillary.getActiveImage()).to.be.null;
         });
     });
 

@@ -28,8 +28,13 @@ export function utilTotalExtent(array, graph) {
     return extent;
 }
 
-
+/**
+ * @typedef {{ type: '-' | '+'; key: string; oldVal: string; newVal: string; display: string; }} TagDiff
+ * @param {Tags} oldTags
+ * @param {Tags} newTags
+ */
 export function utilTagDiff(oldTags, newTags) {
+    /** @type {TagDiff[]} */
     var tagDiff = [];
     var keys = utilArrayUnion(Object.keys(oldTags), Object.keys(newTags)).sort();
     keys.forEach(function(k) {
@@ -293,6 +298,7 @@ export function utilCombinedTags(entityIDs, graph) {
     var tags = {};
     var tagCounts = {};
     var allKeys = new Set();
+    var allTags = [];
 
     var entities = entityIDs.map(function(entityID) {
         return graph.hasEntity(entityID);
@@ -307,6 +313,7 @@ export function utilCombinedTags(entityIDs, graph) {
     });
 
     entities.forEach(function(entity) {
+        allTags.push(entity.tags);
 
         allKeys.forEach(function(key) {
 
@@ -353,6 +360,7 @@ export function utilCombinedTags(entityIDs, graph) {
         });
     }
 
+    tags = Object.defineProperty(tags, Symbol.for('allTags'), { enumerable: false, value: allTags });
     return tags;
 }
 
